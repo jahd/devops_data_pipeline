@@ -1,0 +1,21 @@
+# Spécifier l'image Docker à utiliser pour les étapes
+image: hashicorp/terraform:light
+
+# Définition des étapes de la pipeline
+stages:
+  - plan
+  - apply
+
+# Configuration des tâches pour chaque étape
+terraform_plan:
+  stage: plan
+  script:
+    - terraform init
+    - terraform plan -out=tfplan
+
+terraform_apply:
+  stage: apply
+  script:
+    - terraform apply tfplan
+  only:
+    - main  # Exécuter uniquement sur la branche "master"
